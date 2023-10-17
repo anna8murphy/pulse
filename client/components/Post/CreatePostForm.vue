@@ -8,8 +8,7 @@ const link = ref("");
 const hasPaywall = ref(false);
 
 const groups = ref<Group[]>([]); 
-
-const selectedGroups = ref([]);
+const selectedGroups = ref<Group[]>([]); 
 
 const emit = defineEmits(["refreshPosts"]);
 
@@ -28,12 +27,14 @@ onMounted(async () => {
 
 const createPost = async (title: string, note: string, hasPaywall: boolean, link: string) => {
   try {
+    const selectedGroupNames = selectedGroups.value.map(group => group.name);
+    console.log(selectedGroupNames);
     await fetchy("api/posts", "POST", {
       body: {
         title: title,
         url: link,
         paywall: hasPaywall ? "Y" : "N",
-        groups: "",
+        groups: selectedGroupNames,
         note: note,
         options: {}
       },
@@ -82,7 +83,7 @@ const emptyForm = () => {
     <label for="groups">Post to Groups:</label>
     <div class="group-list">
       <label v-for="group in groups" :key="group.name">
-        <input type="checkbox" v-model="selectedGroups" :value="group.name" />
+        <input type="checkbox" v-model="selectedGroups" :value="group" />
         {{ group.name }}
       </label>
     </div>

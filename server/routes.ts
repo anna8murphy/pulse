@@ -81,7 +81,7 @@ class Routes {
   }
   
   @Router.post("/posts")
-  async createPost(session: WebSessionDoc, title: string, url: string, paywall: string, groups: string, note: string, options?: PostOptions) {
+  async createPost(session: WebSessionDoc, title: string, url: string, paywall: string, groups: Array<string>, note: string, options?: PostOptions) {
     const user = WebSession.getUser(session);
     const created = await Post.create(user, title, groups, options);
     const postId = ((created!).post!)._id;

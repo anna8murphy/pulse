@@ -18,16 +18,18 @@ export interface PostDoc extends BaseDoc {
 export default class PostConcept {
   public readonly posts = new DocCollection<PostDoc>("posts");
 
-  async create(author: ObjectId, title: string, group: string, options?: PostOptions) {
-    let addTo: ObjectId[];
-    if (!group) { // add to all groups
+  async create(author: ObjectId, title: string, groups: Array<string>, options?: PostOptions) {
+    let addTo: ObjectId[] = [];
+    if (groups.length === 0 ) { // add to all groups
       const groups = Group.getGroups({'admin': author});
       addTo = (await groups).map((group) => group._id);
     } 
     else {
-      const groupObj = await Group.getGroupByName(group, author);
-      if (!groupObj) throw new NonexistentGroupError();
-      addTo = [groupObj._id];
+      for (const groupName of groups) {
+        const groupObj = await Group.getGroupByName(groupName, author);
+        if (!groupObj) throw new NonexistentGroupError();
+        addTo.push(groupObj._id);
+      }
     }
     const _id = await this.posts.createOne({ author, title, options, groups: addTo });
     return { msg: "Post successfully created!", post: await this.posts.readOne({ _id }) };
