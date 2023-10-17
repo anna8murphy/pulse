@@ -25,9 +25,9 @@ onBeforeMount(async () => {
   <header>
     <nav>
       <div class="title">
-        <img src="@/assets/images/logo.svg" />
+        <img src="@/assets/images/favicon.png" />
         <RouterLink :to="{ name: 'Home' }">
-          <h1>Social Media App</h1>
+          <h1>Pulse</h1>
         </RouterLink>
       </div>
       <ul>
@@ -54,7 +54,7 @@ onBeforeMount(async () => {
 
 nav {
   padding: 1em 2em;
-  background-color: lightgray;
+  background-color: rgb(223, 223, 223);
   display: flex;
   align-items: center;
 }
@@ -76,7 +76,7 @@ img {
 
 a {
   font-size: large;
-  color: black;
+  color: rgb(234, 143, 143);
   text-decoration: none;
 }
 

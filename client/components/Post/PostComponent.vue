@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
+import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
 import { fetchy } from "../../utils/fetchy";
-import { formatDate } from "@/utils/formatDate";
 
 const props = defineProps(["post"]);
+console.log(props.post);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername } = storeToRefs(useUserStore());
 
@@ -16,14 +17,33 @@ const deletePost = async () => {
   }
   emit("refreshPosts");
 };
+
+const formatLink = (link: string | undefined) => {
+  if (link) {
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+      return 'http://' + link;
+    }
+  }
+  return link;
+};
+
 </script>
 
 <template>
   <p class="author">{{ props.post.author }}</p>
-  <p>{{ props.post.content }}</p>
+  <h3>
+    <a :href="formatLink(props.post.link?.link)" target="_blank" v-if="props.post.link?.link">
+      {{ props.post.title }}
+    </a>
+    <span v-else>
+      {{ props.post.title }}
+    </span>
+  </h3>
+  <p>{{ "paywall: " + (props.post.link?.paywall ? "true" : "false") }}</p>
+  <p>{{ "note: " + props.post.note?.note }}</p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
-      <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
+      <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit Note</button></li>
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
     <article class="timestamp">

@@ -2,13 +2,16 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Friend, Post, User, WebSession } from "./app";
+import { Group, Link, Note, Post, User, WebSession } from "./app";
+import { NoteDoc } from "./concepts/note";
 import { PostDoc, PostOptions } from "./concepts/post";
 import { UserDoc } from "./concepts/user";
 import { WebSessionDoc } from "./concepts/websession";
 import Responses from "./responses";
 
 class Routes {
+
+  // USERS & SESSION
   @Router.get("/session")
   async getSessionUser(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
@@ -57,25 +60,49 @@ class Routes {
     return { msg: "Logged out!" };
   }
 
+  // POSTS
   @Router.get("/posts")
-  async getPosts(author?: string) {
-    let posts;
+  async getPosts(session: WebSessionDoc, author?: string) {
+    const user = WebSession.getUser(session);
+    const userGroups = await Group.getGroups({ 'members': { $in: [user] } });
+    const groupIds = userGroups.map(group => group._id);
+  
+    let authorId;
     if (author) {
-      const id = (await User.getUserByUsername(author))._id;
-      posts = await Post.getByAuthor(id);
-    } else {
-      posts = await Post.getPosts({});
+      authorId = (await User.getUserByUsername(author))._id;
     }
+  
+    const query = author
+      ? { $and: [{ 'groups': { $in: groupIds } }, { 'author': authorId }] }
+      : { $or: [{ 'groups': { $in: groupIds } }, { 'author': user }] };
+  
+    const posts = await Post.getPosts(query);
     return Responses.posts(posts);
   }
-
+  
   @Router.post("/posts")
-  async createPost(session: WebSessionDoc, content: string, options?: PostOptions) {
+  async createPost(session: WebSessionDoc, title: string, url: string, paywall: string, groups: string, note: string, options?: PostOptions) {
     const user = WebSession.getUser(session);
-    const created = await Post.create(user, content, options);
-    return { msg: created.msg, post: await Responses.post(created.post) };
+    const created = await Post.create(user, title, groups, options);
+    const postId = ((created!).post!)._id;
+
+    let paywallBool = false;
+    if (paywall == "Y") paywallBool = true;
+
+    await Note.create(user, note, postId);
+    await Link.create(user, url, title, postId, paywallBool);
+    
+    return { msg: created.msg };
   }
 
+  @Router.patch("/posts/:publishTo")
+  async publishTo(session: WebSessionDoc, post: ObjectId, publishTo: string) {
+    const admin = WebSession.getUser(session);
+    const groupId = (await Group.getGroupByName(publishTo))._id;
+    await Group.isAdmin(admin, publishTo);
+    return await Post.publishTo(post, groupId);
+  }
+  
   @Router.patch("/posts/:_id")
   async updatePost(session: WebSessionDoc, _id: ObjectId, update: Partial<PostDoc>) {
     const user = WebSession.getUser(session);
@@ -84,57 +111,106 @@ class Routes {
   }
 
   @Router.delete("/posts/:_id")
-  async deletePost(session: WebSessionDoc, _id: ObjectId) {
+  async deletePost(session: WebSessionDoc, _id: ObjectId, group: string) {
     const user = WebSession.getUser(session);
     await Post.isAuthor(user, _id);
+    if (group){
+      const groupId = (await Group.getGroupByName(group))._id;
+      await Group.isAdmin(user, group);
+      return Post.removeGroup(_id, groupId);
+    }
+    // delete from all groups
+    await Link.deleteByTarget(_id);
+    await Note.deleteByTarget(_id);
     return Post.delete(_id);
   }
 
-  @Router.get("/friends")
-  async getFriends(session: WebSessionDoc) {
-    const user = WebSession.getUser(session);
-    return await User.idsToUsernames(await Friend.getFriends(user));
+  // NOTES
+  // @Router.post("/notes")
+  // async createNote(session: WebSessionDoc, note: string, targetPost: ObjectId) {
+  //   const author = WebSession.getUser(session);
+  //   await Post.isAuthor(author, targetPost); // only post author can add a note
+  //   await Post.checkPostExists(targetPost);
+  //   return await Note.create(author, note, targetPost);
+  // }
+
+  @Router.delete("/notes")
+  async deleteNote(session: WebSessionDoc, noteId: ObjectId) {
+    const author = WebSession.getUser(session);
+    await Note.isAuthor(author, noteId);
+    return await Note.delete(noteId);
   }
 
-  @Router.delete("/friends/:friend")
-  async removeFriend(session: WebSessionDoc, friend: string) {
-    const user = WebSession.getUser(session);
-    const friendId = (await User.getUserByUsername(friend))._id;
-    return await Friend.removeFriend(user, friendId);
+  @Router.patch("/notes/:_id")
+  async updateNote(session: WebSessionDoc, _id: ObjectId, update: Partial<NoteDoc>) {
+    const author = WebSession.getUser(session);
+    await Note.isAuthor(author, _id);
+    return await Note.update(_id, update);
   }
 
-  @Router.get("/friend/requests")
-  async getRequests(session: WebSessionDoc) {
+  // LINKS
+  @Router.get("/links")
+  async getLinks(session: WebSessionDoc, post: ObjectId) {
     const user = WebSession.getUser(session);
-    return await Responses.friendRequests(await Friend.getRequests(user));
+    const userGroups = await Group.getGroups({ 'members': { $in: [user] } });
+    const groupIds = userGroups.map(group => group._id);
+    const posts = await Post.getPosts({
+      $or: [
+        { 'groups': { $in: groupIds } },
+        { 'author': user }
+      ]
+    });
+    const links = await Promise.all(posts.map(post => Link.getByTarget(post._id)));
+    return links;
   }
 
-  @Router.post("/friend/requests/:to")
-  async sendFriendRequest(session: WebSessionDoc, to: string) {
+  // GROUPS
+  @Router.post("/groups")
+  async createGroup(session: WebSessionDoc, name: string) {
     const user = WebSession.getUser(session);
-    const toId = (await User.getUserByUsername(to))._id;
-    return await Friend.sendRequest(user, toId);
+    return await Group.create(user, name);
   }
 
-  @Router.delete("/friend/requests/:to")
-  async removeFriendRequest(session: WebSessionDoc, to: string) {
+  @Router.get("/groups")
+  async getGroups(session: WebSessionDoc, name?: string) {
     const user = WebSession.getUser(session);
-    const toId = (await User.getUserByUsername(to))._id;
-    return await Friend.removeRequest(user, toId);
+    let groups;
+    if (name) {
+      groups = await Group.getGroups({ name: name, admin: user });
+      return Responses.group(groups[0]);
+    } else {
+      groups = await Group.getGroups({ admin: user });
+      return Responses.groups(groups);
+    }
   }
 
-  @Router.put("/friend/accept/:from")
-  async acceptFriendRequest(session: WebSessionDoc, from: string) {
+  @Router.patch("/groups")
+  async editGroupName(session: WebSessionDoc, name: string, changeTo: string) {
     const user = WebSession.getUser(session);
-    const fromId = (await User.getUserByUsername(from))._id;
-    return await Friend.acceptRequest(fromId, user);
+    await Group.isAdmin(user, name);
+    return await Group.editGroupName(name, changeTo);
   }
 
-  @Router.put("/friend/reject/:from")
-  async rejectFriendRequest(session: WebSessionDoc, from: string) {
+  @Router.delete("/groups")
+  async deleteGroup(session: WebSessionDoc, name: string) {
     const user = WebSession.getUser(session);
-    const fromId = (await User.getUserByUsername(from))._id;
-    return await Friend.rejectRequest(fromId, user);
+    await Group.isAdmin(user, name);
+    const toId = (await Group.getGroupByName(name))._id;
+    return Group.delete(toId);
+  }
+
+  @Router.post("/groups/members/:addTo")
+  async addMember(session: WebSessionDoc, addTo: string, member: string) {
+    const user = WebSession.getUser(session);
+    await Group.isAdmin(user, addTo);
+    return await Group.addMember(addTo, member);
+  }
+
+  @Router.delete("/groups/members/:deleteFrom")
+  async deleteMember(session: WebSessionDoc, deleteFrom: string, member: string) {
+    const user = WebSession.getUser(session);
+    await Group.isAdmin(user,deleteFrom );
+    return await Group.deleteMember(deleteFrom, member);
   }
 }
 

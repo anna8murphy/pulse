@@ -4,12 +4,13 @@ import { fetchy } from "../../utils/fetchy";
 import { formatDate } from "../../utils/formatDate";
 
 const props = defineProps(["post"]);
-const content = ref(props.post.content);
+const content = ref(props.post.note.note);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 
 const editPost = async (content: string) => {
   try {
-    await fetchy(`api/posts/${props.post._id}`, "PATCH", { body: { update: { content: content } } });
+    const noteId = props.post.note._id;
+    await fetchy(`api/notes/${noteId}`, "PATCH", { body: { _id: noteId, update: { note: content } } });
   } catch (e) {
     return;
   }
