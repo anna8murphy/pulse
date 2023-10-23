@@ -191,7 +191,7 @@ class Routes {
     return await Group.editGroupName(name, changeTo);
   }
 
-  @Router.delete("/groups")
+  @Router.delete("/groups/:name")
   async deleteGroup(session: WebSessionDoc, name: string) {
     const user = WebSession.getUser(session);
     await Group.isAdmin(user, name);

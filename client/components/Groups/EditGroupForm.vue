@@ -3,34 +3,33 @@ import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 import { formatDate } from "../../utils/formatDate";
 
-const props = defineProps(["post"]);
-const content = ref(props.post.note.note);
-const emit = defineEmits(["editPost", "refreshPosts"]);
-console.log('Props:', props);
+const props = defineProps(["group"]);
+const changeTo = ref(props.group.name);
 
-const editPost = async (content: string) => {
+const emit = defineEmits(["editGroup", "refreshGroups"]);
+
+const editGroup = async (changeTo: string) => {
   try {
-    const noteId = props.post.note._id;
-    await fetchy(`api/notes/${noteId}`, "PATCH", { body: { _id: noteId, update: { note: content } } });
+    const groupName = props.group.name;
+    await fetchy(`api/groups`, "PATCH", { body: { name: groupName, changeTo: changeTo } });
   } catch (e) {
     return;
   }
-  emit("editPost");
-  emit("refreshPosts");
+  emit("editGroup");
+  emit("refreshGroups");
 };
 </script>
- 
+
 <template>
-  <form @submit.prevent="editPost(content)">
-    <p class="author">{{ props.post.author }}</p>
-    <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
+  <form @submit.prevent="editGroup(changeTo)">
+    <textarea id="changeTo" v-model="changeTo" placeholder="Edit group name" required></textarea>
     <div class="base">
       <menu>
         <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editPost')">Cancel</button></li>
+        <li><button class="btn-small pure-button" @click="emit('editGroup')">Cancel</button></li>
       </menu>
-      <p v-if="props.post.dateCreated !== props.post.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-      <p v-else class="timestamp">Created on: {{ formatDate(props.post.dateCreated) }}</p>
+      <p v-if="props.group.dateCreated !== props.group.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.group.dateUpdated) }}</p>
+      <p v-else class="timestamp">Created on: {{ formatDate(props.group.dateCreated) }}</p>
     </div>
   </form>
 </template>

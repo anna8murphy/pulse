@@ -28,7 +28,6 @@ onMounted(async () => {
 const createPost = async (title: string, note: string, hasPaywall: boolean, link: string) => {
   try {
     const selectedGroupNames = selectedGroups.value.map(group => group.name);
-    console.log(selectedGroupNames);
     await fetchy("api/posts", "POST", {
       body: {
         title: title,
