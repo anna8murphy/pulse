@@ -206,10 +206,10 @@ class Routes {
     return await Group.addMember(addTo, member);
   }
 
-  @Router.delete("/groups/members/:deleteFrom")
+  @Router.delete("/groups/members/:deleteFrom/:member")
   async deleteMember(session: WebSessionDoc, deleteFrom: string, member: string) {
     const user = WebSession.getUser(session);
-    await Group.isAdmin(user,deleteFrom );
+    await Group.isAdmin(user,deleteFrom);
     return await Group.deleteMember(deleteFrom, member);
   }
 }

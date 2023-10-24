@@ -10,10 +10,12 @@ import { onBeforeMount, ref } from "vue";
 const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
-// let groups = ref<Array<Record<string, string>>>([]);
 let groups = ref<Array<Record<string, string & { members: string[] }>>>([]);
 let editing = ref("");
 let searchGroup = ref("");
+const selectedMembers = ref<Array<{ groupId: string; selected: string[] }>>([]);
+
+const emit = defineEmits(["refreshGroups"]);
 
 async function getGroups(name?: string) {
   let query: Record<string, string> = name !== undefined ? { name } : {};
@@ -35,6 +37,8 @@ onBeforeMount(async () => {
   await (getGroups());
   loaded.value = true;
 });
+
+
 </script>
 
 <template>
@@ -47,13 +51,6 @@ onBeforeMount(async () => {
     <article v-for="group in groups" :key="group._id">
       <GroupComponent v-if="editing !== group._id" :group="group" @refreshGroups="getGroups" @editGroup="updateEditing" />
       <EditGroupForm v-else: :group="group" @refreshGroups="getGroups" @editGroup="updateEditing" />
-      <h3> Members </h3>
-      <div class="user-list">
-        <ul class="member-list">
-          <li v-for="member in group.members" :key="member">{{ member }}</li>
-        </ul>
-      </div>
-      
     </article>
   </section>
   <p v-else-if="loaded">No groups found</p>
