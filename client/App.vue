@@ -25,7 +25,7 @@ onBeforeMount(async () => {
   <header>
     <nav>
       <div class="title">
-        <img src="@/assets/images/favicon.png" />
+        <!-- <img src="@/assets/images/favicon.png" /> -->
         <RouterLink :to="{ name: 'Home' }">
           <h1>Pulse</h1>
         </RouterLink>
@@ -57,7 +57,7 @@ onBeforeMount(async () => {
 
 nav {
   padding: 1em 2em;
-  background-color: rgb(223, 223, 223);
+  background-color: rgb(236, 236, 235);
   display: flex;
   align-items: center;
 }
@@ -79,7 +79,7 @@ img {
 
 a {
   font-size: large;
-  color: rgb(234, 143, 143);
+  color: rgb(93, 103, 91);
   text-decoration: none;
 }
 

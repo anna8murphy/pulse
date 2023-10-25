@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { formatDate } from "@/utils/formatDate";
 import { onBeforeMount, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["group"]);
 const emit = defineEmits(["editGroup", "refreshGroups"]);
 const user = ref("");
-
-let groups = ref<Array<Record<string, string & { members: string[] }>>>([]);
-const selectedMembers = ref<Array<string>>([]);
 const loaded = ref(false);
+let groups = ref<Array<Record<string, string & { members: string[] }>>>([]);
 let searchGroup = ref("");
+const selectedMembers = ref<Array<string>>([]);
+
+const emptyForm = () => {
+  user.value = "";
+};
+
+onBeforeMount(async () => {
+  await (getGroups());
+  loaded.value = true;
+});
 
 async function getGroups(name?: string) {
   let query: Record<string, string> = name !== undefined ? { name } : {};
@@ -23,15 +30,6 @@ async function getGroups(name?: string) {
   searchGroup.value = name ? name : "";
   groups.value = groupResults;
 }
-
-const emptyForm = () => {
-  user.value = "";
-};
-
-onBeforeMount(async () => {
-  await (getGroups());
-  loaded.value = true;
-});
 
 const deleteGroup = async () => {
   try {
@@ -72,84 +70,122 @@ async function deleteSelectedMembers(group: string) {
   emit("refreshGroups");
 }
 </script>
-
 <template>
-  <h3 class="name">{{ props.group.name }}</h3>
-  <div class="base">
-    <button class="btn-small pure-button" @click="emit('editGroup', props.group._id)">Edit Name</button>
-    <button class="button-error btn-small pure-button" @click="deleteGroup">Delete Group</button>
-    <h3> Members </h3>
-      <div class="user-list">
-      <ul class="member-list">
-        <label v-for="member in group.members" :key="member">
-          <input type="checkbox" v-model="selectedMembers" :value="member" /> {{ member }}
-        </label>
-      </ul>
-      <button @click="deleteSelectedMembers(group.name)" v-if="group.members.length > 0">Delete Selected</button>
-      <form @submit.prevent="addMember(group.name, user)" class="add-member-form">
-      <label for="name">Username</label>
-      <textarea id="name" v-model="user" placeholder="Username" required></textarea>
-      <button type="submit" class="pure-button-primary pure-button">Add Member</button>
-  </form>
+  <div class="group">
+    <div class="group-header">
+      <h2 class="name">{{ props.group.name }}</h2>
+      <div class="button-container">
+        <button class="edit-button btn-small pure-button" @click="emit('editGroup', props.group._id)">Edit Name</button>
+        <button class="delete-button btn-small pure-button" @click="deleteGroup">Delete Group</button>
+      </div>
     </div>
-    <article class="timestamp">
-      <p v-if="props.group.dateCreated !== props.group.dateUpdated">Edited on: {{ formatDate(props.group.dateUpdated) }}</p>
-      <p v-else>Created on: {{ formatDate(props.group.dateCreated) }}</p>
-    </article>
+
+    <!-- Members and Add Members form -->
+    <div class="members-add-form-container">
+      <div class="members-container">
+        <h3 class="members-heading">Members</h3>
+        <ul class="member-list">
+          <label v-for="member in group.members" :key="member">
+            <input type="checkbox" v-model="selectedMembers" :value="member" /> {{ member }}
+          </label>
+        </ul>
+
+        <!-- Delete Members button -->
+        <button class="delete-button btn-small pure-button" @click="deleteSelectedMembers(group.name)" v-if="group.members.length > 0">Delete Selected</button>
+      </div>
+
+      <!-- Add Members form -->
+      <div class="add-member-form">
+        <label for="name">Search for a user:</label>
+        <textarea class="add-member-input" id="name" v-model="user" placeholder=" Username" required></textarea>
+        <button type="submit" class="add-button btn-small pure-button" @click="addMember(group.name, user)">Add Member!</button>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
-p {
-  margin: 0em;
-}
-
-.author {
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-menu {
-  list-style-type: none;
+.group {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
   display: flex;
-  flex-direction: row;
-  gap: 1em;
-  padding: 0;
-  margin: 0;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.timestamp {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.9em;
-  font-style: italic;
-}
-
-.base {
+.group-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
-.base article:only-child {
-  margin-left: auto;
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button {
+  border-radius: 2px;
+  margin-right: auto;
+  background-color: #e3e2e2;
+  color:  #827f7f;
+}
+
+.delete-button {
+  border-radius: 2px;
+  margin-right: auto;
+  color: rgb(249, 249, 249);
+  background-color: #f64370;
+}
+
+.add-button {
+  border-radius: 2px;
+  margin-right: auto;
+  color: #ffffff;
+  background-color: var(--base-bg);
+}
+
+.members-add-form-container {
+  display: flex;
+  flex-direction: row; /* Change to row */
+  justify-content: space-between;
+  align-items: flex-start; /* Align to the top */
+  gap: 20px;
+}
+
+.members-container {
+  flex-direction: column;
+  width: 65%; /* Adjust as needed */
+}
+
+.members-heading {
+  margin-bottom: 5px; /* Add 'px' unit */
 }
 
 .member-list {
-  list-style: none;
-  padding: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 2px; /* Adjust the gap as needed */
-}
-
-.member-list li {
-  background-color: var(--base-bg);
-  padding: 5px;
-  border-radius: 5px;
+  gap: 10px;
 }
 
 .add-member-form {
-  margin-top: 1rem;
+  flex-direction: column;
+  width: 30%; 
+  margin-top: 30px; 
+}
+
+.add-member-input {
+  width: 100%; 
+  height: 25px;
+  border-radius: .5em;
 }
 </style>
+
+
+
+
+

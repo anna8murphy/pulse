@@ -39,7 +39,6 @@ onBeforeMount(async () => {
 
 <template>
   <section v-if="isLoggedIn">
-    <h2>Create a post:</h2>
     <CreatePostForm @refreshPosts="getPosts" />
   </section>
   <div class="row">
@@ -72,8 +71,8 @@ p,
 }
 
 article {
-  background-color: var(--base-bg);
-  border-radius: 1em;
+  background-color: rgb(245, 246, 246);
+  border-radius: .5em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;

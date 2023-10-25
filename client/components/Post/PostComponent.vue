@@ -56,7 +56,7 @@ const source = extractSourceFromLink(formattedLink);
   <p v-if="isAuthor">groups: {{ props.post.groups }}</p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
-      <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit Note</button></li>
+      <li><button class="edit-note btn-small pure-button" @click="emit('editPost', props.post._id)">Edit Note</button></li>
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
     <article class="timestamp">
@@ -100,5 +100,10 @@ menu {
 
 .base article:only-child {
   margin-left: auto;
+}
+
+.edit-note {
+  background-color: #e3e2e2;
+  color:  #827f7f;
 }
 </style>

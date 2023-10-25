@@ -2,18 +2,13 @@
 import CreateGroupForm from "@/components/Groups/CreateGroupForm.vue";
 import EditGroupForm from "@/components/Groups/EditGroupForm.vue";
 import GroupComponent from "@/components/Groups/GroupComponent.vue";
-import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
-import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-
-const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 let groups = ref<Array<Record<string, string & { members: string[] }>>>([]);
 let editing = ref("");
 let searchGroup = ref("");
-const selectedMembers = ref<Array<{ groupId: string; selected: string[] }>>([]);
 
 const emit = defineEmits(["refreshGroups"]);
 
@@ -43,15 +38,14 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <h2 v-if="!searchGroup">Groups:</h2>
-    <h2 v-else>Group name {{ searchGroup }}:</h2>
+    <h2>Create a group {{ searchGroup }}:</h2>
     <CreateGroupForm @refreshGroups="getGroups" />
   </div>
   <section class="groups" v-if="loaded && groups.length !== 0">
-    <article v-for="group in groups" :key="group._id">
+    <div v-for="group in groups" :key="group._id">
       <GroupComponent v-if="editing !== group._id" :group="group" @refreshGroups="getGroups" @editGroup="updateEditing" />
       <EditGroupForm v-else: :group="group" @refreshGroups="getGroups" @editGroup="updateEditing" />
-    </article>
+    </div>
   </section>
   <p v-else-if="loaded">No groups found</p>
   <p v-else>Loading...</p>
@@ -73,7 +67,7 @@ p,
 }
 
 article {
-  background-color: var(--base-bg);
+  background-color: #e2e2e2;
   border-radius: 1em;
   display: flex;
   flex-direction: column;
@@ -101,9 +95,10 @@ article {
 }
 
 .member-list li {
-  background-color: var(--base-bg);
+  background-color: #ffffff;;
   padding: 5px;
   border-radius: 5px;
 }
+
 </style>
 

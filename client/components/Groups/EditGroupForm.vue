@@ -77,7 +77,7 @@ menu {
 .timestamp {
   display: flex;
   justify-content: flex-end;
-  font-size: 0.9em;
+  font-size: 0.7em;
   font-style: italic;
 }
 </style>

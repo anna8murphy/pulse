@@ -1,14 +1,14 @@
 /* Add some global styles here! */
 
 :root {
-  --red: rgb(210, 40, 71); /*create variables*/
-  --base-bg: #f4f4f4;
+  --red: #f64370;
+  --base-bg: #5594fb;
 }
 
 button.btn-small {
   font-size: 80%;
-  color: #212529;
-  background-color: #e6e3e3;
+  color: rgb(93, 103, 91);
+  background-color: rgb(251, 225, 202);
 }
 
 button.button-error {

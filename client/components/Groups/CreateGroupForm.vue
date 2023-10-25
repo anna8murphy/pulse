@@ -30,14 +30,14 @@ const emptyForm = () => {
 <form @submit.prevent="createGroup(name)">
     <label for="name">Group Name</label>
     <textarea id="name" v-model="name" placeholder="Friends, family, etc." required></textarea>
-    <button type="submit" class="pure-button-primary pure-button">Create Group</button>
+    <button type="submit" class="pure-button-primary pure-button">Create!</button>
   </form>
 </template>
 
 
 <style scoped>
 form {
-  background-color: var(--base-bg);
+  background-color: rgba(215, 215, 215, 0.484);
   border-radius: 1em;
   display: flex;
   flex-direction: column;
@@ -53,27 +53,6 @@ textarea {
   padding: 0.5em;
   border-radius: 4px;
   resize: none;
-}
-
-.name {
-  height: .5em;
-  padding: 0.5em;
-  border-radius: 4px;
-}
-
-.note-input {
-  height: 3em;
-}
-
-.group-list {
-  padding: .1em;
-  height: 2em;
-}
-
-.paywall-option {
-  display: flex;
-  height: 3em;
-  align-items: center;
 }
 
 input[type="checkbox"] {

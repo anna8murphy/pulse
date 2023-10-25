@@ -10,7 +10,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
   <main>
     <h1>Groups</h1>
     <section>
-      <h1 v-if="isLoggedIn">Manage your Groups:</h1>
+      <h1 v-if="isLoggedIn"></h1>
       <h1 v-else>Please login!</h1>
       <GroupListComponent/>
     </section>
@@ -20,5 +20,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 <style scoped>
 h1 {
   text-align: center;
+  margin-bottom: 2em;
+  margin-top: 1em;
 }
 </style>

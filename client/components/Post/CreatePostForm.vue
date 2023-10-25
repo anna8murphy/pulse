@@ -45,22 +45,6 @@ const createPost = async (title: string, note: string, hasPaywall: boolean, link
   emptyForm();
 };
 
-// const addToGroups = async () => {
-//   try {
-//     const postData = {
-//       title: title.value,
-//       hasPaywall: hasPaywall.value,
-//       link: link.value,
-//       note: note.value,
-//       groups: selectedGroups.value,
-//     };
-//     await fetchy("api/posts/addToGroups", "POST", { body: postData });
-//   } catch (_) {
-//     return;
-//   }
-//   emit("refreshPosts");
-//   emptyForm();
-// };
 
 const emptyForm = () => {
   title.value = "";
@@ -70,7 +54,7 @@ const emptyForm = () => {
 
 <template>
   <form @submit.prevent="createPost(title, note, hasPaywall, link)">
-    <label for="title">Article Upload:</label>
+    <h3>What are you reading?</h3>
     <textarea id="title" v-model="title" placeholder="Paste the title here..." required></textarea>
     <textarea id="link" v-model="link" class="link-input" placeholder="URL" required></textarea>
     <label for="note">Add a note!</label>
@@ -86,14 +70,14 @@ const emptyForm = () => {
         {{ group.name }}
       </label>
     </div>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+    <button type="submit" class="create-btn btn-small pure-button">Publish!</button>
   </form>
 </template>
 
 <style scoped>
 form {
-  background-color: var(--base-bg);
-  border-radius: 1em;
+  background-color: rgb(249, 249, 249);
+  border-radius: .5em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -105,8 +89,8 @@ textarea {
   font-size: inherit;
   height: 2em;
   width: 400px;
-  padding: 0.5em;
-  border-radius: 4px;
+  padding: 0.em;
+  border-radius: 3px;
   resize: none;
 }
 
@@ -133,6 +117,27 @@ textarea {
 
 input[type="checkbox"] {
   margin-left: 0.5em;
+}
+
+.button-secondary {
+    background: #F25B6C;
+}
+
+.create-btn {
+  justify-content: flex-end; /* Move the button to the right side */
+  height: 2.5em;
+  width: 6em;
+  font-size: 15px;
+  align-self: flex-end; /* Align the button to the right within the flex container */
+  background: var(--base-bg);
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  margin-top: 0; /* Remove the default top margin */
+  margin-bottom: 0.5em; /* Add some bottom margin for spacing */
 }
 
 </style> 
