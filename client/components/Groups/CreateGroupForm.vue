@@ -27,18 +27,22 @@ const emptyForm = () => {
 </script>
 
 <template>
+<div class="text">
+<h2>create a group</h2>
 <form @submit.prevent="createGroup(name)">
-    <label for="name">Group Name</label>
-    <textarea id="name" v-model="name" placeholder="Friends, family, etc." required></textarea>
+    <label class="group-name" for="name">group name:</label>
+    <textarea id="name" v-model="name" class="input" placeholder="friends, family, etc." required></textarea>
     <button type="submit" class="button pure-button-primary pure-button">Create!</button>
   </form>
+</div>
 </template>
-
 
 <style scoped>
 form {
-  background-color: rgba(215, 215, 215, 0.484);
+  /* border: 1px solid #d8d6d6; */
+  border: 1px solid var(--base-bg);
   border-radius: 1em;
+  background: #f0efef5a;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -55,13 +59,30 @@ textarea {
   resize: none;
 }
 
+.group-name{
+  font-size: 1.2em;
+}
+
 input[type="checkbox"] {
   margin-left: 0.5em;
 }
 
 .button{
-  background: #f86262;
+  background: var(--pinkred);
+  border-radius: 2px;
+  margin-left: auto;
+  line-height: 1em;
   border-radius: 4px;
+  margin-bottom: 0.15em;
+  margin-top: .5em;
+}
+
+.text {
+  font-family: mandali;
+}
+
+.input{
+  height: 1.5em;
 }
 </style> 
 

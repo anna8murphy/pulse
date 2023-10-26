@@ -21,20 +21,45 @@ async function updatePassword() {
 </script>
 
 <template>
-  <h2>Update user details</h2>
+  <div class="text">
+    <h2>update user details</h2>
   <form @submit.prevent="updateUsername" class="pure-form">
     <fieldset>
-      <legend>Change your username</legend>
-      <input type="text" placeholder="New username" v-model="username" required />
-      <button type="submit" class="pure-button pure-button-primary">Update username</button>
+      <legend>change your username</legend>
+      <input type="text" class="input-spacing" placeholder="new username" v-model="username" required />
+      <button type="submit" class=" btn pure-button pure-button-primary">Update username</button>
     </fieldset>
   </form>
 
   <form @submit.prevent="updatePassword" class="pure-form">
     <fieldset>
-      <legend>Change your password</legend>
-      <input type="password" placeholder="New password" v-model="password" required />
-      <button type="submit" class="pure-button pure-button-primary">Update password</button>
+      <legend>change your password</legend>
+      <input type="password" class="input-spacing" placeholder="new password" v-model="password" required />
+      <button type="submit" class="btn pure-button pure-button-primary">Update password</button>
     </fieldset>
   </form>
+  </div>
+  
 </template>
+
+<style>
+
+.text {
+  font-family: mandali;
+}
+
+.btn {
+  padding: 5px;
+  height: 2.75em;
+  width: 10em;
+  font-size: 15px;
+  background: var(--base-bg);
+  color: white;
+  border-radius: .25em;
+}
+
+.input-spacing {
+  margin-right: 5px;
+}
+
+</style>

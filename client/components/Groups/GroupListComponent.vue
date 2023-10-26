@@ -38,7 +38,6 @@ onBeforeMount(async () => {
 
 <template>
   <div class="row">
-    <h2>Create a group {{ searchGroup }}:</h2>
     <CreateGroupForm @refreshGroups="getGroups" />
   </div>
   <section class="groups" v-if="loaded && groups.length !== 0">
@@ -51,28 +50,20 @@ onBeforeMount(async () => {
   <p v-else>Loading...</p>
 </template>
 
-
 <style scoped>
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
+
+h2{
+  font-family: mandali;
 }
 
 section,
 p,
 .row {
+  display: grid;
+  grid-template-columns: repeat(3, 2fr); /* Make each column 2 times wider */
+  gap: 1em;
   margin: 0 auto;
-  max-width: 60em;
-}
-
-article {
-  background-color: #e2e2e2;
-  border-radius: 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  padding: 1em;
+  max-width: 90em;
 }
 
 .groups {
@@ -83,7 +74,7 @@ article {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 60em;
+  max-width: 90em;
 }
 
 .member-list {

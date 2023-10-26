@@ -15,9 +15,12 @@ const isEvening = currentHour >= 18 || currentHour < 5;
 
 <template>
   <main>
-    <!-- <h1>Home Page</h1> -->
     <section>
-      <h1 v-if="isLoggedIn">{{ isMorning ? 'good morning' : (isEvening ? 'good evening' : 'Hello') }}, {{ currentUsername }}!</h1>
+      <h1 v-if="isLoggedIn">
+        <span>
+          {{ isMorning ? 'good morning' : (isEvening ? 'good evening' : 'good afternoon') }},
+        {{ currentUsername }}! </span>
+      </h1>
       <h1 v-else>Please login!</h1>
     </section>
     <PostListComponent />
@@ -26,11 +29,21 @@ const isEvening = currentHour >= 18 || currentHour < 5;
 
 <style scoped>
 h1 {
-  font-family: mandali ;
+  font-family: mandali;
+  color: var(--gray);
   text-align: center;
-  margin-top: 1.5em; /* Remove the default top margin */
-  margin-bottom: 1em; /* Add some bottom margin for spacing */
+  margin-top: 1.5em;
+  margin-bottom: 1em;
 }
 
+.shimmer-text{
+  background: linear-gradient(90deg, #989595, #6b6565, #a99f9f);
+  background-size: 200% 100%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: grayscale(100%);
+}
 
 </style>
+

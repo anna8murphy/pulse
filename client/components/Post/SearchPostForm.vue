@@ -37,6 +37,7 @@ form {
 
 .search-button {
   background-color: var(--base-bg);
+  color: white;
   height: 2em;
   display: flex;
   justify-content: center;

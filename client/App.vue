@@ -25,9 +25,8 @@ onBeforeMount(async () => {
   <header>
     <nav>
       <div class="title">
-        <!-- <img src="@/assets/images/favicon.png" /> -->
         <RouterLink :to="{ name: 'Home' }">
-          <h1>pulse</h1>
+          <h1 class="shimmer-text">pulse</h1>
         </RouterLink>
       </div>
       <ul>
@@ -55,6 +54,21 @@ onBeforeMount(async () => {
 <style scoped>
 @import "./assets/toast.css";
 
+.shimmer-text {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(90deg, #dd7d7d, #ebaeae, var(--pinkred));
+  background-size: 200% 100%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 nav {
   font-family: mandali;
   padding: 1em 2em;
@@ -66,7 +80,7 @@ nav {
 h1 {
   font-size: 2em;
   margin: 0;
-  color: #404040;;
+  color: var(--gray)
   /* color: rgb(93, 103, 91); */
 }
 
@@ -83,8 +97,7 @@ img {
 
 a {
   font-size: large;
-  /* color: rgb(93, 103, 91); */
-  color: #f86262;
+  color: var(--gray);
   text-decoration: none;
 }
 

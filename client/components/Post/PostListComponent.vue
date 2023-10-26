@@ -71,11 +71,11 @@ p,
 }
 
 article {
-  background-color: rgb(245, 246, 246);
+  background-color: rgba(245, 246, 246, 0.415);
   border-radius: .5em;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: .75em;
   padding: 1em;
 }
 

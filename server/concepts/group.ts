@@ -17,7 +17,7 @@ export default class GroupConcept {
     const members = [admin];
     if (!name) throw new GroupNameEmptyError();
     
-    const group = await this.groups.readOne({ name });
+    const group = await this.groups.readOne({ name, admin });
     if (group) throw new DuplicateGroupNameError(name);
   
     const _id = await this.groups.createOne({ admin, name, members });

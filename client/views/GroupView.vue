@@ -8,7 +8,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 
 <template>
   <main>
-    <h1>Groups</h1>
+    <h1>groups</h1>
     <section>
       <h1 v-if="isLoggedIn"></h1>
       <h1 v-else>Please login!</h1>
@@ -19,8 +19,16 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 
 <style scoped>
 h1 {
+  color: var(--gray);
+  font-family: mandali;
   text-align: center;
   margin-bottom: 2em;
   margin-top: 1em;
 }
+
+.shimmer-text{
+  animation: shimmer 3s infinite linear;
+  filter: grayscale(100%);
+}
+
 </style>

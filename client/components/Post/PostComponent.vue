@@ -21,7 +21,7 @@ const deletePost = async () => {
 const formatLink = (link: string) => {
   if (link) {
     if (!link.startsWith('http://') && !link.startsWith('https://')) {
-      return 'http://' + link;
+        return 'http://' + link;      
     }
   }
   return link;
@@ -32,7 +32,12 @@ const extractSourceFromLink = (link: string) => {
   const matches = link.match(hostnameRegex);
 
   if (matches && matches.length > 2) {
-    return matches[2]; 
+    if (props.post.link?.paywall) {
+      return matches[2] + ' ($)'; 
+    }
+    else {
+      return matches[2]; 
+    }
   }
   return 'not specified'; 
 };
@@ -52,9 +57,7 @@ const source = extractSourceFromLink(formattedLink);
     </span>
   </h2>
     <p class="source">{{ source ? 'source: ' + source : '' }}</p>
-  <p>{{ "paywall: " + (props.post.link?.paywall ? "true" : "false") }}</p>
-  <p>{{ "note: " + props.post.note?.note }}</p>
-  <p v-if="isAuthor">groups: {{ props.post.groups }}</p>
+    <p class="note">{{ props.post.note?.note }}</p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
       <li><button class="edit-note btn-small pure-button" @click="emit('editPost', props.post._id)">Edit Note</button></li>
@@ -75,6 +78,16 @@ p {
 .author {
   font-weight: bold;
   font-size: 1.3em;
+}
+
+.note{
+    /* background-color: #e4e4e45e; */
+    border: 1px solid #e0e0e077; 
+    color: var(--gray);
+    border-radius: 2px;
+    padding: 10px;
+    margin: 10px 0;
+    width: 25em;
 }
 
 menu {
@@ -109,7 +122,7 @@ p {
   border-radius: 2px;
   margin-right: auto;
   color: rgb(249, 249, 249);
-  background-color: #ea3b50;
+  background-color: var(--red);
 }
 
 .base article:only-child {
@@ -118,13 +131,18 @@ p {
 
 .edit-note {
   background-color: #e3e3e3cf;
-  color: rgb(117, 113, 113);
+  color: var(--gray);
 }
 
 h2 {
-  font-family: fowviel;
+  font-family: crimson;
   margin-top: 0; /* Remove the default top margin */
   margin-bottom: 0.5em; /* Add some bottom margin for spacing */
+  font-size: 1.3em;
+}
+
+a:visited {
+  color: var(--base-bg);
 }
 
 </style>

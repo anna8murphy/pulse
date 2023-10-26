@@ -1,8 +1,10 @@
 /* Add some global styles here! */
 
 :root {
-  --red: #f64370;
+  --red: rgb(223, 88, 88);
   --base-bg: #5594fb;
+  --pinkred: #f76c6ce4;
+  --gray: rgb(94, 92, 92);
 }
 
 button.btn-small {
@@ -33,9 +35,19 @@ a.button {
   gap: 1em;
 }
 
-@font-face {
-  font-family: 'fowviel';
-  src: url('./Fowviel.ttf') format('truetype');
+.shimmer-text {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(90deg, #dd7d7d, #ebaeae, var(--pinkred));
+  background-size: 200% 100%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
 @font-face {
@@ -46,5 +58,10 @@ a.button {
 @font-face {
   font-family: 'slab';
   src: url('./PaytoneOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'crimson';
+  src: url('./CrimsonText-Regular.ttf') format('truetype');
 }
 

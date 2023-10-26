@@ -54,13 +54,13 @@ const emptyForm = () => {
 
 <template>
   <form @submit.prevent="createPost(title, note, hasPaywall, link)">
-    <h3>what are you reading?</h3>
+    <h3 class="shimmer-text">what are you reading?</h3>
     <textarea id="title" v-model="title" class="text" placeholder=" paste the title here..." required></textarea>
     <textarea id="link" v-model="link" class="text" placeholder=" URL" required></textarea>
     <label class="note-label" for="note"><strong>add a note!</strong></label>
-    <textarea id="note" v-model="note" class="text" placeholder=" write your most salient thoughts here..."></textarea>
+    <textarea id="note" v-model="note" class="text note-input" placeholder=" write your thoughts here..."></textarea>
     <div class="paywall-option">
-      <label class="text" for="paywall"><strong>paywall:</strong></label>
+      <label class="text" for="paywall"><strong>paywall?</strong></label>
       <input type="checkbox" id="paywall" v-model="hasPaywall" />
     </div>
     <label class="text" for="groups"><strong>groups:</strong></label>
@@ -70,14 +70,27 @@ const emptyForm = () => {
         {{ group.name }}
       </label>
     </div>
-    <button type="submit" class="create-btn btn-small pure-button">Publish!</button>
+    <button type="submit" class="btn-small pure-button moving-border-btn">publish!</button>
   </form>
 </template>
 
 <style scoped>
+
+.moving-border-btn {
+  justify-content: flex-end; /* Move the button to the right side */
+  height: 2.5em;
+  width: 6em;
+  font-size: 15px;
+  align-self: flex-end; /* Align the button to the right within the flex container */
+  background: var(--pinkred);
+  color: white;
+  margin-bottom: 0.5em;
+  border-radius: .25em;
+}
+
 form {
   background-color: rgb(249, 249, 249);
-  border-radius: .5em;
+  border-radius: 1em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -94,21 +107,14 @@ textarea {
   resize: none;
 }
 
-.link-input {
-  height: 1em;
-  padding: 0.5em;
-  border-radius: 4px;
-}
-
-.note-input {
-  height: 3em;
-}
-
 .group-list {
   padding: .1em;
   height: 2em;
 }
 
+.note-input {
+  height: 3em;
+}
 .text {
   font-family: mandali;
 }
@@ -126,19 +132,6 @@ textarea {
 input[type="checkbox"] {
   margin-left: 0.5em;
 }
-
-.create-btn {
-  justify-content: flex-end; /* Move the button to the right side */
-  height: 2.5em;
-  width: 6em;
-  font-size: 15px;
-  align-self: flex-end; /* Align the button to the right within the flex container */
-  background: #f86262;
-  color: white;
-  border-radius: 4px;
-  margin-bottom: 0.5em;
-}
-
 
 h3 {
  font-family: mandali;
