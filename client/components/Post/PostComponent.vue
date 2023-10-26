@@ -38,26 +38,27 @@ const extractSourceFromLink = (link: string) => {
 };
 const formattedLink = formatLink(props.post.link?.link);
 const source = extractSourceFromLink(formattedLink);
+
 </script>
 
 <template>
   <p class="author">{{ props.post.author }}</p>
-  <h3>
+  <h2>
     <a :href="formattedLink" target="_blank" v-if="props.post.link?.link">
       {{ props.post.title }}
     </a>
     <span v-else>
       {{ props.post.title }}
     </span>
-  </h3>
-  <p>{{ source ? 'source: ' + source : '' }}</p>
+  </h2>
+    <p class="source">{{ source ? 'source: ' + source : '' }}</p>
   <p>{{ "paywall: " + (props.post.link?.paywall ? "true" : "false") }}</p>
   <p>{{ "note: " + props.post.note?.note }}</p>
   <p v-if="isAuthor">groups: {{ props.post.groups }}</p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
       <li><button class="edit-note btn-small pure-button" @click="emit('editPost', props.post._id)">Edit Note</button></li>
-      <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
+      <li><button class="delete-button btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
     <article class="timestamp">
       <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
@@ -73,7 +74,7 @@ p {
 
 .author {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 menu {
@@ -85,6 +86,12 @@ menu {
   margin: 0;
 }
 
+p {
+  font-family: mandali;
+}
+.source {
+  font-style: italic;
+}
 .timestamp {
   display: flex;
   justify-content: flex-end;
@@ -98,12 +105,26 @@ menu {
   align-items: center;
 }
 
+.delete-button {
+  border-radius: 2px;
+  margin-right: auto;
+  color: rgb(249, 249, 249);
+  background-color: #ea3b50;
+}
+
 .base article:only-child {
   margin-left: auto;
 }
 
 .edit-note {
-  background-color: #e3e2e2;
-  color:  #827f7f;
+  background-color: #e3e3e3cf;
+  color: rgb(117, 113, 113);
 }
+
+h2 {
+  font-family: fowviel;
+  margin-top: 0; /* Remove the default top margin */
+  margin-bottom: 0.5em; /* Add some bottom margin for spacing */
+}
+
 </style>

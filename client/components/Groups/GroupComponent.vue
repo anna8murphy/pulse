@@ -139,7 +139,7 @@ async function deleteSelectedMembers(group: string) {
   border-radius: 2px;
   margin-right: auto;
   color: rgb(249, 249, 249);
-  background-color: #f64370;
+  background-color: #ea3b50;
 }
 
 .add-button {

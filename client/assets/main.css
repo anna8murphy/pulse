@@ -32,3 +32,19 @@ a.button {
   align-items: center;
   gap: 1em;
 }
+
+@font-face {
+  font-family: 'fowviel';
+  src: url('./Fowviel.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'mandali';
+  src: url('./Mandali-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'slab';
+  src: url('./PaytoneOne-Regular.ttf') format('truetype');
+}
+

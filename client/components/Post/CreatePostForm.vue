@@ -54,18 +54,18 @@ const emptyForm = () => {
 
 <template>
   <form @submit.prevent="createPost(title, note, hasPaywall, link)">
-    <h3>What are you reading?</h3>
-    <textarea id="title" v-model="title" placeholder="Paste the title here..." required></textarea>
-    <textarea id="link" v-model="link" class="link-input" placeholder="URL" required></textarea>
-    <label for="note">Add a note!</label>
-    <textarea id="note" v-model="note" class="note-input" placeholder="Write your thoughts here..."></textarea>
+    <h3>what are you reading?</h3>
+    <textarea id="title" v-model="title" class="text" placeholder=" paste the title here..." required></textarea>
+    <textarea id="link" v-model="link" class="text" placeholder=" URL" required></textarea>
+    <label class="note-label" for="note"><strong>add a note!</strong></label>
+    <textarea id="note" v-model="note" class="text" placeholder=" write your most salient thoughts here..."></textarea>
     <div class="paywall-option">
-      <label for="paywall">Paywall:</label>
+      <label class="text" for="paywall"><strong>paywall:</strong></label>
       <input type="checkbox" id="paywall" v-model="hasPaywall" />
     </div>
-    <label for="groups">Post to Groups:</label>
+    <label class="text" for="groups"><strong>groups:</strong></label>
     <div class="group-list">
-      <label v-for="group in groups" :key="group.name">
+      <label v-for="group in groups" :key="group.name" class="text">
         <input type="checkbox" v-model="selectedGroups" :value="group" />
         {{ group.name }}
       </label>
@@ -109,6 +109,14 @@ textarea {
   height: 2em;
 }
 
+.text {
+  font-family: mandali;
+}
+
+.note-label{
+  font-family: mandali;
+  /* padding: 1em; */
+}
 .paywall-option {
   display: flex;
   height: 3em;
@@ -119,25 +127,23 @@ input[type="checkbox"] {
   margin-left: 0.5em;
 }
 
-.button-secondary {
-    background: #F25B6C;
-}
-
 .create-btn {
   justify-content: flex-end; /* Move the button to the right side */
   height: 2.5em;
   width: 6em;
   font-size: 15px;
   align-self: flex-end; /* Align the button to the right within the flex container */
-  background: var(--base-bg);
+  background: #f86262;
   color: white;
   border-radius: 4px;
   margin-bottom: 0.5em;
 }
 
+
 h3 {
+ font-family: mandali;
   margin-top: 0; /* Remove the default top margin */
-  margin-bottom: 0.5em; /* Add some bottom margin for spacing */
+  margin-bottom: 0.2em; /* Add some bottom margin for spacing */
 }
 
 </style> 

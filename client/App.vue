@@ -27,21 +27,21 @@ onBeforeMount(async () => {
       <div class="title">
         <!-- <img src="@/assets/images/favicon.png" /> -->
         <RouterLink :to="{ name: 'Home' }">
-          <h1>Pulse</h1>
+          <h1>pulse</h1>
         </RouterLink>
       </div>
       <ul>
         <li>
-          <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
+          <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> home </RouterLink>
         </li>
         <li>
-          <RouterLink :to="{ name: 'Groups' }" :class="{ underline: currentRouteName == 'Groups' }"> Groups </RouterLink>
+          <RouterLink :to="{ name: 'Groups' }" :class="{ underline: currentRouteName == 'Groups' }"> groups </RouterLink>
         </li>
         <li v-if="isLoggedIn">
-          <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
+          <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> settings </RouterLink>
         </li>
         <li v-else>
-          <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
+          <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> login </RouterLink>
         </li>
       </ul>
     </nav>
@@ -56,6 +56,7 @@ onBeforeMount(async () => {
 @import "./assets/toast.css";
 
 nav {
+  font-family: mandali;
   padding: 1em 2em;
   background-color: rgb(236, 236, 235);
   display: flex;
@@ -65,7 +66,10 @@ nav {
 h1 {
   font-size: 2em;
   margin: 0;
+  color: #404040;;
+  /* color: rgb(93, 103, 91); */
 }
+
 
 .title {
   display: flex;
@@ -79,7 +83,8 @@ img {
 
 a {
   font-size: large;
-  color: rgb(93, 103, 91);
+  /* color: rgb(93, 103, 91); */
+  color: #f86262;
   text-decoration: none;
 }
 
