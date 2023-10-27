@@ -11,7 +11,6 @@ const currentHour = currentTime.getHours();
 
 const isMorning = currentHour >= 5 && currentHour < 12;
 const isEvening = currentHour >= 18 || currentHour < 5;
-
 </script>
 
 <template>
