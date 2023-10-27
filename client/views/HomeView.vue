@@ -2,6 +2,7 @@
 import PostListComponent from "@/components/Post/PostListComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import LoginView from "./LoginView.vue";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 
@@ -21,7 +22,7 @@ const isEvening = currentHour >= 18 || currentHour < 5;
           {{ isMorning ? 'good morning' : (isEvening ? 'good evening' : 'good afternoon') }},
         {{ currentUsername }}! </span>
       </h1>
-      <h1 v-else>Please login!</h1>
+      <LoginView v-else/>
     </section>
     <PostListComponent />
   </main>
