@@ -41,7 +41,7 @@ import RegisterForm from "@/components/Login/RegisterForm.vue";
 
 main {
   height: 100vh;
-  background: linear-gradient(90deg,rgb(251, 222, 222), rgba(208, 216, 227, 0.681) 50%, rgba(251, 222, 222, 0.9));
+  background: linear-gradient(90deg,rgb(251, 222, 222), rgba(213, 214, 214, 0.681) 50%, rgba(251, 222, 222, 0.9));
 }
 </style>
 
