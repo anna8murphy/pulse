@@ -23,7 +23,7 @@ onBeforeMount(async () => {
 
 <template>
   <header>
-    <nav>
+    <nav v-if="isLoggedIn">
       <div class="title">
         <RouterLink :to="{ name: 'Home' }">
           <h1 class="shimmer-text">pulse</h1>

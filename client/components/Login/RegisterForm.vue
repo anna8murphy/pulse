@@ -17,18 +17,18 @@ async function register() {
 
 <template>
   <form class="pure-form pure-form-aligned" @submit.prevent="register">
-    <h3>Register User</h3>
+    <h3>register user</h3>
     <fieldset>
       <div class="pure-control-group">
-        <label for="aligned-name">Username</label>
-        <input v-model.trim="username" type="text" id="aligned-name" placeholder="Username" required />
+        <label for="aligned-name">username</label>
+        <input v-model.trim="username" type="text" id="aligned-name" placeholder="username" required />
       </div>
       <div class="pure-control-group">
-        <label for="aligned-password">Password</label>
-        <input type="password" v-model.trim="password" id="aligned-password" placeholder="Password" required />
+        <label for="aligned-password">password</label>
+        <input type="password" v-model.trim="password" id="aligned-password" placeholder="password" required />
       </div>
       <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Register</button>
+        <button type="submit" class="button pure-button pure-button-primary">register</button>
       </div>
     </fieldset>
   </form>
@@ -38,5 +38,15 @@ async function register() {
 h3 {
   display: flex;
   justify-content: center;
+}
+
+.button{
+  background: var(--base-bg);
+  border-radius: 2px;
+  margin-left: auto;
+  line-height: 1em;
+  border-radius: 4px;
+  margin-bottom: 0.15em;
+  margin-top: .5em;
 }
 </style>

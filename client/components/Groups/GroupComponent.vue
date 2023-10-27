@@ -215,21 +215,22 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 2px;
+  border-radius: 3px;
   margin-left: auto;
-  color: rgb(249, 249, 249);
-  background-color: var(--red);
+  color: var(--gray);
+  background-color: #e4e4e4;
+  border: 1px solid #adadad;
   height: 30px;
   width: 110px;
   text-align: center;
 }
 
 .add-button {
-  border-radius: 2px;
+  border-radius: 3px;
   margin-left: auto;
   color: var(--gray);
   background-color: #e3e3e3cf;
-  border: 1px solid #cbcbcbcf;
+  border: 1px solid var(--base-bg);
   display: flex;
   justify-content: center;
   align-items: center;

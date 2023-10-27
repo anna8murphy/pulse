@@ -40,7 +40,7 @@ const emptyForm = () => {
 <style scoped>
 form {
   /* border: 1px solid #d8d6d6; */
-  border: 1px solid var(--base-bg);
+  border: 1px solid var(--pinkred);
   border-radius: 1em;
   background: #f0efef5a;
   display: flex;
