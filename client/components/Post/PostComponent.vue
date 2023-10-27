@@ -138,8 +138,8 @@ p {
 
 h2 {
   font-family: crimson;
-  margin-top: 0; /* Remove the default top margin */
-  margin-bottom: 0.5em; /* Add some bottom margin for spacing */
+  margin-top: 0; 
+  margin-bottom: 0.5em;
   font-size: 1.3em;
 }
 

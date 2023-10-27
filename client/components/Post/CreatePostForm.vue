@@ -48,6 +48,8 @@ const createPost = async (title: string, note: string, hasPaywall: boolean, link
 
 const emptyForm = () => {
   title.value = "";
+  note.value = "";
+  link.value="";
 };
 
 </script>
@@ -63,7 +65,7 @@ const emptyForm = () => {
       <label class="text" for="paywall"><strong>paywall?</strong></label>
       <input type="checkbox" id="paywall" v-model="hasPaywall" />
     </div>
-    <label class="text" for="groups"><strong>groups:</strong></label>
+    <label class="text" for="groups"><strong>groups (optional):</strong></label>
     <div class="text" v-if="groups.length === 0"><em>please create your first group!</em></div>
     <div class="group-list">
       <label v-for="group in groups" :key="group.name" class="text">
