@@ -26,7 +26,7 @@ export default class PostConcept {
     } 
     else {
       for (const groupName of groups) {
-        const groupObj = await Group.getGroupByName(groupName, author);
+        const groupObj = await Group.getGroupByName(author, groupName);
         if (!groupObj) throw new NonexistentGroupError();
         addTo.push(groupObj._id);
       }

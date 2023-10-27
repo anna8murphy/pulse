@@ -70,7 +70,7 @@ const emptyForm = () => {
         {{ group.name }}
       </label>
     </div>
-    <button type="submit" class="btn-small pure-button moving-border-btn">publish!</button>
+    <button type="submit" class="btn-small pure-button moving-border-btn">Publish!</button>
   </form>
 </template>
 
@@ -83,6 +83,7 @@ const emptyForm = () => {
   font-size: 15px;
   align-self: flex-end; /* Align the button to the right within the flex container */
   background: var(--pinkred);
+  border: 1px solid #f16c6c;
   color: white;
   margin-bottom: 0.5em;
   border-radius: .25em;

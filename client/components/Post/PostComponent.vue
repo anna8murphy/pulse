@@ -21,6 +21,7 @@ const deletePost = async () => {
 const formatLink = (link: string) => {
   if (link) {
     if (!link.startsWith('http://') && !link.startsWith('https://')) {
+      console.log("HERE");
         return 'http://' + link;      
     }
   }
@@ -142,6 +143,10 @@ h2 {
 }
 
 a:visited {
+  color: #2265d2;
+}
+
+a {
   color: var(--base-bg);
 }
 

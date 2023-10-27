@@ -98,7 +98,7 @@ class Routes {
   @Router.patch("/posts/:publishTo")
   async publishTo(session: WebSessionDoc, post: ObjectId, publishTo: string) {
     const admin = WebSession.getUser(session);
-    const groupId = (await Group.getGroupByName(publishTo))._id;
+    const groupId = (await Group.getGroupByName(admin, publishTo))._id;
     await Group.isAdmin(admin, publishTo);
     return await Post.publishTo(post, groupId);
   }
@@ -115,7 +115,7 @@ class Routes {
     const user = WebSession.getUser(session);
     await Post.isAuthor(user, _id);
     if (group){
-      const groupId = (await Group.getGroupByName(group))._id;
+      const groupId = (await Group.getGroupByName(user, group))._id;
       await Group.isAdmin(user, group);
       return Post.removeGroup(_id, groupId);
     }
@@ -126,14 +126,6 @@ class Routes {
   }
 
   // NOTES
-  // @Router.post("/notes")
-  // async createNote(session: WebSessionDoc, note: string, targetPost: ObjectId) {
-  //   const author = WebSession.getUser(session);
-  //   await Post.isAuthor(author, targetPost); // only post author can add a note
-  //   await Post.checkPostExists(targetPost);
-  //   return await Note.create(author, note, targetPost);
-  // }
-
   @Router.delete("/notes")
   async deleteNote(session: WebSessionDoc, noteId: ObjectId) {
     const author = WebSession.getUser(session);
@@ -188,14 +180,14 @@ class Routes {
   async editGroupName(session: WebSessionDoc, name: string, changeTo: string) {
     const user = WebSession.getUser(session);
     await Group.isAdmin(user, name);
-    return await Group.editGroupName(name, changeTo);
+    return await Group.editGroupName(user, name, changeTo);
   }
 
   @Router.delete("/groups/:name")
   async deleteGroup(session: WebSessionDoc, name: string) {
     const user = WebSession.getUser(session);
     await Group.isAdmin(user, name);
-    const toId = (await Group.getGroupByName(name))._id;
+    const toId = (await Group.getGroupByName(user, name))._id;
     return Group.delete(toId);
   }
 
@@ -203,14 +195,13 @@ class Routes {
   async addMember(session: WebSessionDoc, addTo: string, member: string) {
     const user = WebSession.getUser(session);
     await Group.isAdmin(user, addTo);
-    return await Group.addMember(addTo, member);
+    return await Group.addMember(user, addTo, member);
   }
 
   @Router.delete("/groups/members/:deleteFrom/:member")
   async deleteMember(session: WebSessionDoc, deleteFrom: string, member: string) {
     const user = WebSession.getUser(session);
-    await Group.isAdmin(user,deleteFrom);
-    return await Group.deleteMember(deleteFrom, member);
+    return await Group.deleteMember(user, deleteFrom, member);
   }
 }
 

@@ -1,6 +1,6 @@
 import { User } from "../app";
 import DocCollection, { BaseDoc } from "../framework/doc";
-import { NotAllowedError, NotFoundError } from "./errors";
+import { NotAllowedError } from "./errors";
 
 import { Filter, ObjectId } from "mongodb";
 
@@ -25,15 +25,19 @@ export default class GroupConcept {
   }
 
   async isAdmin(user: ObjectId, groupName: string) {
-    const _id = (await this.getGroupByName(groupName))._id;
-    const group = await this.groups.readOne({ _id });
-    if (!group) {
-      throw new NotFoundError(`Group ${_id} does not exist!`);
-    }
+    const group = await this.getGroupByName(user, groupName);
     if (group.admin.toString() !== user.toString()) {
-      const groupName = await this.idsToGroupNames([group._id]);
-      throw new NonexistentGroupError(groupName[0]!);
+      throw new NonexistentGroupError(groupName);
     }
+    // const _id = (await this.getGroupByName(user, groupName))._id;
+    // const group = await this.groups.readOne({ _id });
+    // if (!group) {
+    //   throw new NotFoundError(`Group ${_id} does not exist!`);
+    // }
+    // if (group.admin.toString() !== user.toString()) {
+    //   const groupName = await this.idsToGroupNames([group._id]);
+    //   throw new NonexistentGroupError(groupName[0]!);
+    // }
   }
 
   async getGroups(query: Filter<GroupDoc>){
@@ -41,10 +45,15 @@ export default class GroupConcept {
     return groups;
   }
 
-  async getGroupByName(name: string, admin?: ObjectId) {
-    const group = await this.groups.readOne({ name });
+  async getGroupByName(admin: ObjectId, name: string) {
+    const group = await this.groups.readOne({
+      "$and": [
+        { "name": name },
+        { "admin": admin }
+      ]
+    });
     if (group === null) throw new NonexistentGroupError(name);
-    if (admin) await this.isAdmin(admin, name);
+    // if (admin) await this.isAdmin(admin, name);
     return group;
   }
 
@@ -56,8 +65,8 @@ export default class GroupConcept {
     return { msg: "Group deleted successfully!" };
   }
 
-  async addMember(addTo: string, member: string){
-    const group = await this.getGroupByName(addTo);
+  async addMember(admin: ObjectId, addTo: string, member: string){
+    const group = await this.getGroupByName(admin, addTo);
     if (!group) throw new NonexistentGroupError(addTo);
 
     const memberId = await User.getUserByUsername(member);
@@ -67,21 +76,20 @@ export default class GroupConcept {
     return { msg: "Member added successfully!" };
   }
 
-  async deleteMember(deleteFrom: string, member: string){
-    const group = await this.getGroupByName(deleteFrom);
-    if (!group) throw new NonexistentGroupError(deleteFrom);
-    
+  async deleteMember(admin: ObjectId, deleteFrom: string, member: string){
+    const group = await this.getGroupByName(admin, deleteFrom);    
     const memberId = await User.getUserByUsername(member);
+    
     if (!group.members.some((memberIdObj) => memberIdObj.equals(memberId._id))) throw new NonexistentMemberError(member);
-
-    await this.groups.filterUpdateOne( { _id: group._id }, { $pull: { members: memberId._id } });
+    
+    await this.groups.filterUpdateOne({ _id: group._id }, { $pull: { members: memberId._id } });
     return { msg: "Member deleted successfully!" };
     }
 
-  async editGroupName(name: string, changeTo: string){
+  async editGroupName(admin: ObjectId, name: string, changeTo: string){
     if (!name || !changeTo) throw new GroupNameEmptyError();
 
-    const group = await this.getGroupByName(name);
+    const group = await this.getGroupByName(admin, name);
     if (!group) throw new NonexistentGroupError(name);
     
     await this.groups.updateOne( { _id: group._id }, { name: changeTo} );

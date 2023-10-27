@@ -87,7 +87,7 @@ async function deleteSelectedMembers(group: string) {
           <div v-if="isDropdownOpen" class="dropdown">
             <ul>
               <button class="edit-button btn-small pure-button" @click="emit('editGroup', props.group._id)">Edit Name</button>
-              <button class="delete-button btn-small pure-button" @click="deleteGroup">Delete Group</button>
+              <button class="delete-btn btn-small pure-button" @click="deleteGroup">Delete Group</button>
             </ul>
           </div>
           <a class="svg" @click="toggleDropdown">
@@ -112,7 +112,9 @@ async function deleteSelectedMembers(group: string) {
         <h3 class="members-heading">members</h3>
         <ul class="member-list">
         <label v-for="member in group.members" :key="member">
+          <template v-if="member !== 'DELETED_USER'">
           <input type="checkbox" v-model="selectedMembers" :value="member" /> {{ member }}
+        </template>
         </label>
       </ul>
     </div>
@@ -207,6 +209,7 @@ ul {
   align-items: center;
   justify-content: center;
   background-color: #e3e2e2;
+  border: 1px solid #bab8b889;
   color:  var(--gray);
   margin-bottom: 1px;
 }
@@ -219,7 +222,21 @@ ul {
   margin-left: auto;
   color: var(--gray);
   background-color: #e4e4e4;
-  border: 1px solid #adadad;
+  border: 1px solid #bab8b889;
+  height: 30px;
+  width: 110px;
+  text-align: center;
+}
+
+.delete-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  margin-left: auto;
+  color: var(--gray);
+  background-color: #e4e4e4;
+  border: 1px solid #db535389;
   height: 30px;
   width: 110px;
   text-align: center;
@@ -278,7 +295,6 @@ ul {
 }
 
 </style>
-
 
 
 
