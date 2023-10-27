@@ -64,6 +64,7 @@ const emptyForm = () => {
       <input type="checkbox" id="paywall" v-model="hasPaywall" />
     </div>
     <label class="text" for="groups"><strong>groups:</strong></label>
+    <div class="text" v-if="groups.length === 0"><em>please create your first group!</em></div>
     <div class="group-list">
       <label v-for="group in groups" :key="group.name" class="text">
         <input type="checkbox" v-model="selectedGroups" :value="group" />

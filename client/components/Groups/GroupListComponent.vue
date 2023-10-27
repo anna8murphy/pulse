@@ -46,14 +46,21 @@ onBeforeMount(async () => {
       <EditGroupForm v-else: :group="group" @refreshGroups="getGroups" @editGroup="updateEditing" />
     </div>
   </section>
-  <p v-else-if="loaded">No groups found</p>
-  <p v-else>Loading...</p>
+  <p class="text" v-else-if="loaded"><span>create groups to publish to!</span></p>
+  <p class= "text" v-else>loading...</p>
 </template>
 
 <style scoped>
 
 h2{
   font-family: mandali;
+}
+.text {
+  font-family: mandali;
+}
+
+.text span {
+  padding: 10px; 
 }
 
 section,

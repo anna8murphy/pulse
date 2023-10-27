@@ -52,8 +52,8 @@ onBeforeMount(async () => {
       <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
     </article>
   </section>
-  <p v-else-if="loaded">No posts found</p>
-  <p v-else>Loading...</p>
+  <p class="text" v-else-if="loaded">no posts found</p>
+  <p class="text" v-else>loading...</p>
 </template>
 
 <style scoped>
@@ -61,6 +61,10 @@ section {
   display: flex;
   flex-direction: column;
   gap: 1em;
+}
+
+.text {
+  font-family: mandali;
 }
 
 section,

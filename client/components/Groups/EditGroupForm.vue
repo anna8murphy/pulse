@@ -25,8 +25,8 @@ const editGroup = async (changeTo: string) => {
     <textarea id="changeTo" v-model="changeTo" placeholder="Edit group name" required></textarea>
     <div class="base">
       <menu>
-        <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editGroup')">Cancel</button></li>
+        <li><button class="btn btn-small pure-button-primary pure-button" type="submit">Save</button></li>
+        <li><button class="btn btn-small pure-button" @click="emit('editGroup')">Cancel</button></li>
       </menu>
       <p v-if="props.group.dateCreated !== props.group.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.group.dateUpdated) }}</p>
       <p v-else class="timestamp">Created on: {{ formatDate(props.group.dateCreated) }}</p>
@@ -36,7 +36,7 @@ const editGroup = async (changeTo: string) => {
 
 <style scoped>
 form {
-  background-color: var(--base-bg);
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -54,6 +54,10 @@ p {
   margin: 0em;
 }
 
+.btn{
+  background-color: #e0dddd;
+  width: 60px;
+}
 .author {
   font-weight: bold;
   font-size: 1.2em;

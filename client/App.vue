@@ -16,7 +16,6 @@ onBeforeMount(async () => {
   try {
     await userStore.updateSession();
   } catch {
-    // User is not logged in
   }
 });
 </script>
@@ -43,18 +42,20 @@ onBeforeMount(async () => {
           <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> login </RouterLink>
         </li>
       </ul>
-    
+    </nav>
     <article v-if="toast !== null" class="toast" :class="toast.style">
       <p>{{ toast.message }}</p>
     </article>
-    
-  </nav>
   </header>
   <RouterView />
 </template>
 
 <style scoped>
 @import "./assets/toast.css";
+
+.toast{
+  font-family: mandali;
+}
 
 .shimmer-text {
   animation: shimmer 1.5s infinite linear;

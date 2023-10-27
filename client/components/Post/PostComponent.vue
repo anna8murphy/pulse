@@ -67,6 +67,7 @@ const source = extractSourceFromLink(formattedLink);
     <article class="timestamp">
       <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
       <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
+      <p v-if="props.post.author == currentUsername"><br>{{ "posted to: " +  props.post.groups.join(', ')}}</p>
     </article>
   </div>
 </template>
@@ -106,12 +107,12 @@ p {
 .source {
   font-style: italic;
 }
+
 .timestamp {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.9em;
-  font-style: italic;
-}
+    display: block;
+    font-size: 0.9em;
+    font-style: italic;
+  }
 
 .base {
   display: flex;
