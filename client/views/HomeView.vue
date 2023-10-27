@@ -21,9 +21,11 @@ const isEvening = currentHour >= 18 || currentHour < 5;
           {{ isMorning ? 'good morning' : (isEvening ? 'good evening' : 'good afternoon') }},
         {{ currentUsername }}! </span>
       </h1>
+      <template v-if="isLoggedIn">
+        <PostListComponent />
+      </template>
       <LoginView v-else/>
     </section>
-    <PostListComponent />
   </main>
 </template>
 
@@ -32,17 +34,9 @@ h1 {
   font-family: mandali;
   color: var(--gray);
   text-align: center;
+  margin: 0;
   margin-top: 1.5em;
   margin-bottom: 1em;
-}
-
-.shimmer-text{
-  background: linear-gradient(90deg, #989595, #6b6565, #a99f9f);
-  background-size: 200% 100%;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  filter: grayscale(100%);
 }
 
 </style>
